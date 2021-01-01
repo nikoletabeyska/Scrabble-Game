@@ -18,6 +18,14 @@ void Main_Game(int& numberofletters, int& numberofrounds) {
 		cout << endl;
 		cout << "Enter your word: ";
 		cin >> word;
+		while (!Word_Check(letters, word)) {
+			word.erase();
+			cout << "Invalid input. Try again with: ";
+			for (int i = 0; i < letters.length(); i++) cout << letters[i] << " ";
+			cout << endl;
+			cout << "Enter your word: ";
+			cin >> word;
+		}
 		letters.erase();
 	}
 	cout << endl;
