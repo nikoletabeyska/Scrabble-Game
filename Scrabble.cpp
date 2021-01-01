@@ -10,6 +10,7 @@ using namespace std;
 void Main_Game(int& numberofletters, int& numberofrounds) {
 	string word;
 	string letters;
+	int points = 0;
 	cout << endl;
 	for (int i = 1; i <= numberofrounds; i++) {
 		cout << setw(10) << "Round " << i << endl;
@@ -26,15 +27,17 @@ void Main_Game(int& numberofletters, int& numberofrounds) {
 			cout << "Enter your word: ";
 			cin >> word;
 		}
+		points += word.length();
+		cout << "Your points so far are: " << points << endl;
 		letters.erase();
 	}
 	cout << endl;
+	cout << "Your total points are: " << points << endl;
 	cout << "Returning to MENU" << endl;
 
 }
 int main()
 {
-	int score = 0;
 	int choice = 0;
 	int numberofletters = 10;
 	int numberofrounds = 10;
