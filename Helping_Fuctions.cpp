@@ -36,6 +36,53 @@ void NumberofRounds(int& numberofrounds) {
 	cout << "Enter the number of rounds: ";
 	cin >> numberofrounds;
 }
+bool Word_Check(string letters, string word) {
+	//checks if the word is longer than the count of the given letters
+	if (word.length() > letters.length()) return 0;
+	//checks if there is a letter in the word which is not in the given letters
+	int counter = 0;
+	for (int i = 0; i < word.length(); i++) {
+		for (int j = 0; j < letters.length(); j++) {
+			if (word[i] == letters[j]) {
+				counter++;
+				letters.erase(letters.begin() + j);
+				break;
+			}
+		}
+	}
+	if (counter != word.length()) return 0;
+	if (!Dictionary_Check(word)) return 0;
+	return 1;
+}
+
+
+bool Dictionary_Check(string word) {
+
+	//checks if the word is in the dictionary
+	int offset = 0;
+	bool found = 0;
+	string line;
+	ifstream DictionaryFile;
+	DictionaryFile.open("Dictionary.txt", ios::in);
+
+	if (DictionaryFile.is_open())
+	{
+		while (!DictionaryFile.eof())
+		{
+			getline(DictionaryFile, line);
+			if ((offset = line.find(word, 0)) != string::npos)
+			{
+				found = 1;
+				DictionaryFile.close();
+				break;
+			}
+		}
+
+	}
+	DictionaryFile.close();
+	if (found) return 1;
+	return 0;
+}
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 
