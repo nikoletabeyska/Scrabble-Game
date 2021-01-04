@@ -69,13 +69,21 @@ int main()
 			break;
 
 		case 3:
+		{
+	    string new_word;
+		cout << "Enter new word to the dictionary: ";
+		cin >> new_word;
+		AppendtoDictionary(new_word);
+		}
+			break;
+
 		case 4:
 		default:
 			cout << "Incorrect choice" << endl;
 			cout << "Choose again: ";
 		}
 	} while (choice != 4);
-
+	  return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
