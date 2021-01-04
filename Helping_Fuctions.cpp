@@ -57,11 +57,9 @@ bool Word_Check(string letters, string word) {
 	if (!Dictionary_Check(word)) return 0;
 	return 1;
 }
-
+//checks if the word is in the dictionary
 bool Dictionary_Check(string word) {
 
-	//checks if the word is in the dictionary
-	int offset = 0;
 	bool found = 0;
 	string line;
 	//input file stream
@@ -70,14 +68,11 @@ bool Dictionary_Check(string word) {
 	DictionaryFile.open("Dictionary.txt", ios::in);
 	//checks if the file  is open
 	if (DictionaryFile.is_open())
-	{   //countinues until the file has ended
-		while (!DictionaryFile.eof())
-		{   //reads a line from the file
-			getline(DictionaryFile, line);
-			if ((offset = line.find(word, 0)) != string::npos)
-			{
-				found = 1;
-				DictionaryFile.close();
+	{
+		while (getline(DictionaryFile, line))
+		{       
+			if(line==word) {
+			  found = 1;
 				break;
 			}
 		}
@@ -106,12 +101,11 @@ void AppendtoDictionary(string new_word) {
 			Dictionaryfile.close();
 			//erasing the string
 			new_word.erase();
-			cout << "The word already exists in the dictionary." << endl;
-			cout << "If you want to return to MENU enter 'M' else enter new word to the dictionary: ";
-			//cout << "Enter new word to the dictionary: ";
+			cout << "This word already exists in the dictionary." << endl;
+			cout << "If you want to return to MENU enter '1' else enter new word to the dictionary: ";
 			cin >> new_word;
 			//calling the function again with the new word
-			if (new_word != "M")AppendtoDictionary(new_word);
+			if (new_word != "1")AppendtoDictionary(new_word);
 		}
 	}   //closing the file
 		Dictionaryfile.close();
