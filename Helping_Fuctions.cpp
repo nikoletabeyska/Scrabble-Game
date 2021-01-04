@@ -28,14 +28,17 @@ void GenerateRandomLetters(int& numberofletters, string& letters) {
 		cout << letter << " ";
 	}
 }
+
 void NumberofLetters(int& numberofletters) {
 	cout << "Enter the number of letters: ";
 	cin >> numberofletters;
 }
+
 void NumberofRounds(int& numberofrounds) {
 	cout << "Enter the number of rounds: ";
 	cin >> numberofrounds;
 }
+
 bool Word_Check(string letters, string word) {
 	//checks if the word is longer than the count of the given letters
 	if (word.length() > letters.length()) return 0;
@@ -55,20 +58,21 @@ bool Word_Check(string letters, string word) {
 	return 1;
 }
 
-
 bool Dictionary_Check(string word) {
 
 	//checks if the word is in the dictionary
 	int offset = 0;
 	bool found = 0;
 	string line;
+	//input file stream
 	ifstream DictionaryFile;
+	//opens without erasing the content of the file
 	DictionaryFile.open("Dictionary.txt", ios::in);
-
+	//checks if the file  is open
 	if (DictionaryFile.is_open())
-	{
+	{   //countinues until the file has ended
 		while (!DictionaryFile.eof())
-		{
+		{   //reads a line from the file
 			getline(DictionaryFile, line);
 			if ((offset = line.find(word, 0)) != string::npos)
 			{
@@ -82,6 +86,36 @@ bool Dictionary_Check(string word) {
 	DictionaryFile.close();
 	if (found) return 1;
 	return 0;
+}
+void AppendtoDictionary(string new_word) {
+	//output file stream
+	ofstream Dictionaryfile;
+	//opens the file for appending
+	Dictionaryfile.open("Dictionary.txt", ios::app);
+	//checking if the file is open
+	if (Dictionaryfile.is_open()) {
+		//checks if the new word already exists in the Dictionary file
+		if (!Dictionary_Check(new_word)) {
+			//adding the new word on a new line in the Dictionary text file 
+			Dictionaryfile << endl << new_word;
+			cout << "The new word was added.";
+			cout << endl << endl;
+		}
+		else {
+			//closing the file
+			Dictionaryfile.close();
+			//erasing the string
+			new_word.erase();
+			cout << "The word already exists in the dictionary." << endl;
+			cout << "If you want to return to MENU enter 'M' else enter new word to the dictionary: ";
+			//cout << "Enter new word to the dictionary: ";
+			cin >> new_word;
+			//calling the function again with the new word
+			if (new_word != "M")AppendtoDictionary(new_word);
+		}
+	}   //closing the file
+		Dictionaryfile.close();
+	
 }
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
