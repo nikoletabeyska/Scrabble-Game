@@ -5,6 +5,7 @@
 #include<iomanip>
 #include<random>
 #include<fstream>
+#include<ctime>
 #include "Helping_Functions.h"
 using namespace std;
 void Menu_output() {
@@ -18,12 +19,14 @@ void Menu_output() {
 	cout << endl;
 	cout << "Choose an option: ";
 }
+
 void GenerateRandomLetters(int& numberofletters, string& letters) {
 	char letter;
 	int r;
+	srand(time(NULL)); //initializes the random number generator
 	for (int i = 1; i <= numberofletters; i++) {
-		r = rand() % 26;
-		letter = 'a' + r;
+		r = rand() % 26;// generats a random number
+		letter = 'a' + r; // converts the number to a letter from a-z
 		letters += letter;
 		cout << letter << " ";
 	}
