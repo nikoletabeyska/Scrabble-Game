@@ -9,11 +9,11 @@
 #include "Helping_Functions.h"
 using namespace std;
 void Menu_output() {
-	cout << setw(10) << "MENU" << endl;
+	cout <<setw(10)<< "MENU" << endl;
 	cout << "1.Start a new game" << endl;
 	cout << "2.Settings" << endl;
-	cout << setw(4) << "a.change the number of the given letters (10)" << endl;
-	cout << setw(4) << "b.change the number of rounds (10)" << endl;
+	cout << "a.change the number of the given letters (10)" << endl;
+	cout << "b.change the number of rounds (10)" << endl;
 	cout << "3.Add a new word" << endl;
 	cout << "4.Exit" << endl;
 	cout << endl;
@@ -27,9 +27,67 @@ void GenerateRandomLetters(int& numberofletters, string& letters) {
 	for (int i = 1; i <= numberofletters; i++) {
 		r = rand() % 26;// generats a random number
 		letter = 'a' + r; // converts the number to a letter from a-z
-		letters += letter;
-		cout << letter << " ";
+		letters += letter;//adds the letter to the sequence of letters
+		//cout << letter << " ";
 	}
+	if (!is_PossibleWord(letters)) {
+		letters.erase();
+		GenerateRandomLetters(numberofletters, letters);
+	}
+	else {
+		for (int i = 0; i < numberofletters; i++) cout << letters[i] << " ";
+	}
+}
+//converts a line from the dictionary from uppercase to lowercase line
+void ToLowerCase(string& line) {
+	for (int i = 0; i < line.length(); i++) {
+		if (line[i] >= 'A' && line[i] <= 'Z') {
+			line[i] = line[i] + ('a' - 'A');
+		}
+	}
+}
+//checks if a valid combination (word) of the generated letters exists
+bool is_PossibleWord(string letters) {
+
+	string line;
+	int counter = 0;
+	string initial_letters = letters;
+	ifstream DictionaryFile;
+
+	DictionaryFile.open("Dictionary.txt", ios::in);
+	if (DictionaryFile.is_open())
+	{
+		while (getline(DictionaryFile, line))
+		{
+			ToLowerCase(line);
+			counter = 0;
+			// counts how many of the generated letters are present in a word from the dictionary
+			for (int i = 0; i < line.length(); i++) {
+				for (int j = 0; j < letters.length(); j++) {
+
+					if (line[i] == letters[j]) {
+						counter++;
+						letters.erase(letters.begin() + j); //erases the generated letter which is found in the word
+						break;
+
+					}
+				}
+			}
+			/*when the word's length equals to the count of the generated letters found in it
+			it indicates that there is a possible combination that the user can make from the letter sequence*/
+			if (counter == line.length()) {
+
+				DictionaryFile.close();
+				return 1;
+			}
+
+			letters.erase(); // erases the changed sequence
+			letters = initial_letters; // turns back to it's initial content
+		}
+	}
+
+	DictionaryFile.close();
+	return 0;
 }
 
 void NumberofLetters(int& numberofletters) {
@@ -62,14 +120,7 @@ bool Word_Check(string letters, string word) {
 	if (!Dictionary_Check(word)) return 0;
 	return 1;
 }
-//converts a line from the dictionary from uppercase to lowercase line
-void ToLowerCase(string& line) {
-	for (int i = 0; i < line.length(); i++) {
-		if (line[i] >= 'A' && line[i] <= 'Z') {
-			line[i] = line[i] + ('a' - 'A');
-		}
-	}
-}
+
 //checks if the word is in the dictionary
 bool Dictionary_Check(string word) {
 
