@@ -33,13 +33,15 @@ void GenerateRandomLetters(int& numberofletters, string& letters) {
 }
 
 void NumberofLetters(int& numberofletters) {
-	cout << "Enter the number of letters: ";
+	cout << "Enter the new number of letters: ";
 	cin >> numberofletters;
+	cout << endl;
 }
 
 void NumberofRounds(int& numberofrounds) {
-	cout << "Enter the number of rounds: ";
+	cout << "Enter the new number of rounds: ";
 	cin >> numberofrounds;
+	cout << endl;
 }
 
 bool Word_Check(string letters, string word) {
@@ -60,6 +62,14 @@ bool Word_Check(string letters, string word) {
 	if (!Dictionary_Check(word)) return 0;
 	return 1;
 }
+//converts a line from the dictionary from uppercase to lowercase line
+void ToLowerCase(string& line) {
+	for (int i = 0; i < line.length(); i++) {
+		if (line[i] >= 'A' && line[i] <= 'Z') {
+			line[i] = line[i] + ('a' - 'A');
+		}
+	}
+}
 //checks if the word is in the dictionary
 bool Dictionary_Check(string word) {
 
@@ -73,10 +83,11 @@ bool Dictionary_Check(string word) {
 	if (DictionaryFile.is_open())
 	{
 		while (getline(DictionaryFile, line))
-		{       
+		{
+			ToLowerCase(line);
 			if(line==word) {
 			  found = 1;
-				break;
+			  break;
 			}
 		}
 
@@ -85,6 +96,7 @@ bool Dictionary_Check(string word) {
 	if (found) return 1;
 	return 0;
 }
+//adds a new word to the dictionary if it doesn't exist yet
 void AppendtoDictionary(string new_word) {
 	//output file stream
 	ofstream Dictionaryfile;
@@ -108,7 +120,7 @@ void AppendtoDictionary(string new_word) {
 			cout << "If you want to return to MENU enter '1' else enter new word to the dictionary: ";
 			cin >> new_word;
 			//calling the function again with the new word
-			if (new_word != "1")AppendtoDictionary(new_word);
+			if (new_word != "1") AppendtoDictionary(new_word);
 		}
 	}   //closing the file
 		Dictionaryfile.close();
