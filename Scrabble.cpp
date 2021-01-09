@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include<iomanip>
+#include<limits>
 #include "Helping_Functions.h"
 using namespace std;
 
@@ -12,9 +13,9 @@ void Main_Game(int& numberofletters, int& numberofrounds) {
 	string existing_word;
 	bool fail = 0;
 	int failed_round = 0;
+	bool returntoMENU = 0;
 	int points = 0;
 	cout << endl;
-	
 	cout << endl;
 	for (int i = 1; i <= numberofrounds; i++) {
 		if (fail) {
@@ -37,6 +38,7 @@ void Main_Game(int& numberofletters, int& numberofrounds) {
 			letters.erase();
 			continue;
 		}
+		if (word[0] == 'M') break;
 		while (!Word_Check(letters, word)) {
 			word.erase();
 			cout << " Invalid word. Try again with: ";
@@ -51,11 +53,16 @@ void Main_Game(int& numberofletters, int& numberofrounds) {
 				fail = 1;
 				failed_round = i;
 				word.erase();
-				letters.erase(); break;
-				//continue;
+				letters.erase(); 
+				break;
+			}
+			if (word[0] == 'M') {
+				returntoMENU = 1;
+				break;
 			}
 		}
 		if (fail) continue;
+		if (returntoMENU) break;
 		points += word.length();
 		if(i!=numberofrounds)cout << " Your points so far are: " << points << endl;
 		letters.erase();
@@ -73,21 +80,20 @@ int main()
 {
 	int choice = 0;
 	int numberofletters = 10;
-	int numberofrounds = 10;
+	int numberofrounds =10;
+	cout << "       SCRABBLE" << endl;
+	cout << endl;
+	cout << "      How to play: " << endl;
+	cout << "*You will be given a combination of letters from which you should make an existing word." << endl;
+	cout << "*If you can't make a word, during one of the rounds, enter '0' to see a possible word." << endl;
+	cout << "Then you will be automatically returned to Round 1." << endl;
+	cout << "*If you want to return to the MENU during the game, enter 'M'." << endl;
+	cout << endl;
 	do {
-		cout << "       SCRABBLE" << endl;
-		cout << endl;
-		cout << "      How to play: " << endl;
-		cout << "*You will be given a combination of letters from which you should make an existing word." << endl;
-		cout << "*If you can't make a word, during one of the rounds, enter '0' to see a possible word." << endl;
-	    cout<<"Then you will be automatically returned to Round 1." << endl;
-		cout << "*If you want to return to the MENU during the game, enter 'M'." << endl;
-		cout << endl;
-		Menu_output();
+		Menu_output(numberofrounds,numberofletters);
 		cin >> choice;
 		switch (choice) {
 		case 1:
-			
 			Main_Game(numberofletters, numberofrounds);
 			break;
 
@@ -126,7 +132,9 @@ int main()
 			cout << endl;
 			cout << " Incorrect choice." << endl;
 			cout << endl;
-		
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			break;
 		}
 	} while (choice != 4);
 	  return 0;
