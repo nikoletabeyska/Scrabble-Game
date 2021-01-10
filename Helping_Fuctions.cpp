@@ -215,7 +215,7 @@ void ShowPossibleWord(string& word, string& letters,string existing_word ) {
 
 // Converts all uppercase letters in a word to lowercase letters
 void ToLowerCase(string& line) {
-	for (int i = 0; i < line.length(); i++) {
+	for (size_t i = 0; i < line.length(); i++) {
 		if (line[i] >= 'A' && line[i] <= 'Z') {
 			line[i] = line[i] + ('a' - 'A');
 		}
