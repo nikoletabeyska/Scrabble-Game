@@ -6,7 +6,8 @@
 #include<limits>
 #include "Helping_Functions.h"
 using namespace std;
-//executes if you start a new game
+
+// Executes if you start a new game
 void Main_Game(int& numberofletters, int& numberofrounds,int& highest_score) {
 	string word;
 	string letters;
@@ -92,7 +93,6 @@ void Main_Game(int& numberofletters, int& numberofrounds,int& highest_score) {
 		cout << endl;
 	}
 
-	
 	//Displays after the last round
 	cout << "--->";
 	cout << "Your total points are: " << points<<endl;
@@ -104,14 +104,16 @@ void Main_Game(int& numberofletters, int& numberofrounds,int& highest_score) {
 	}
 	cout << " *Returning to MENU*" << endl;
 	cout << endl;
-
 }
+
 int main()
 {
 	int choice = 0;
 	int numberofletters = 10;
 	int numberofrounds =10;
 	int highest_score = 0;
+	// Initializes the random number generator
+	srand((unsigned int)time(NULL));
 	cout << "----------------------" << endl;
 	cout << "     SCRABBLE" << endl;
 	cout << "----------------------"<< endl;
@@ -155,18 +157,18 @@ int main()
 
 		case 3:
 		{
-	    string new_word;
-		cout << " Enter new word to the dictionary: ";
-		cin >> new_word;
+	      string new_word;
+		  cout << " Enter new word to the dictionary: ";
+		  cin >> new_word;
 		// Checks if the new word contains only letters
-		while(!isWord(new_word)) {
-			new_word.erase();
-			cout << " This is not a word." << endl;
-			cout << " Enter a valid new word to the dictionary: ";
-			cin >> new_word;
-		}
+		  while(!isWord(new_word)) {
+			  new_word.erase();
+			  cout << " This is not a word." << endl;
+			  cout << " Enter a valid new word to the dictionary: ";
+			  cin >> new_word;
+		  }
 		// Adds a new word to the dictionary if it doesn't exist yet
-		AppendtoDictionary(new_word);
+		   AppendtoDictionary(new_word);
 		}
 			break;
 
