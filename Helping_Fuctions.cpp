@@ -1,5 +1,19 @@
 // Helping_Fuctions.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
+/**
+*
+* Solution to course project # 8
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2020 / 2021
+*
+* @author Nikoleta Beyska
+* @idnumber 62540
+* @compiler VC
+*
+* <file with helper functions>
+*
+*/
 
 #include<iostream>
 #include<iomanip>
