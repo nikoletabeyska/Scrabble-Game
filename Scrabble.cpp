@@ -1,5 +1,19 @@
 // Scrabble.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
+/**
+*
+* Solution to course project # 8
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2020/2021
+*
+* @author Nikoleta Beyska
+* @idnumber 62540
+* @compiler VC
+*
+* <file with main cpp file>
+*
+*/
 
 #include <iostream>
 #include<iomanip>
@@ -92,7 +106,6 @@ void Main_Game(int& numberofletters, int& numberofrounds,int& highest_score) {
 		word.erase();
 		cout << endl;
 	}
-
 	//Displays after the last round
 	cout << "--->";
 	cout << "Your total points are: " << points<<endl;
