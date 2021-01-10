@@ -6,8 +6,10 @@
 #include<random>
 #include<fstream>
 #include<ctime>
+#include<limits>
 #include "Helping_Functions.h"
 using namespace std;
+
 void Menu_output(int numberofrounds, int numberofletters) {
 
 	cout <<setw(10)<< "MENU" << endl;
@@ -22,30 +24,76 @@ void Menu_output(int numberofrounds, int numberofletters) {
 	cout << "--> Choose an option: ";
 }
 
+// Changes the number of letters
+void NumberofLetters(int& numberofletters) {
+	cout << " Enter the new number of letters: ";
+	cin >> numberofletters;
+	while (numberofletters <= 1) {
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << " Not a possible setting." << endl;
+		cout << " Enter the new number of letters: ";
+		cin >> numberofletters;
+	}
+	cout << endl;
+}
 
+// Changes the number of rounds
+void NumberofRounds(int& numberofrounds) {
+	cout << " Enter the new number of rounds: ";
+	cin >> numberofrounds;
+	while (numberofrounds < 1) {
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << " Not a possible setting." << endl;
+		cout << " Enter the new number of letters: ";
+		cin >> numberofrounds;
+	}
+	cout << endl;
+}
+
+// Generates random letters with at least 30% vowels and with a possible combination that equals a word
 void GenerateRandomLetters(int& numberofletters, string& letters,string& existing_word) {
 	char letter;
 	int r;
-	// Initializes the random number generator
-	srand((unsigned int)time(NULL));
-	for (int i = 1; i <= numberofletters; i++) {
-		// Generates a random number with range 0-25 (english alphabet = 26)
-		r = rand() % 26;
-		// Converts the number to a letter from a-z
-		letter = 'a' + r; 
-		// Adds the letter to the sequence of letters
-		letters += letter;
-	}
-	// If there can't be made a possible combination from the letters that equals a valid word ,the function is called again
+	int numberofvowels;
+	char Vowels[] = {'a','o','e','i','u','y'};
+	// Continues if the number of vowels among the generated letters are less than 30 percent of them
+	do {
+		letters.erase();
+	    numberofvowels = 0;
+		for (int i = 1; i <= numberofletters; i++) {
+			// Generates a random number with range 0-25 (english alphabet = 26)
+			r = rand() % 26;
+			// Converts the number to a letter from a-z
+			letter = 'a' + r;
+			// Adds the letter to the sequence of letters
+			letters += letter;
+		}
+		// Counts the number of vowels in the generated letters
+		for (int i = 0; i < numberofletters; i++) {
+			int j = 0;
+			while (Vowels[j] != '\0') {
+				if (letters[i] == Vowels[j]) {
+					numberofvowels++;
+				}
+				j++;
+			}
+		}
+	} while (numberofvowels < int(0.3 * numberofletters));
+
+	// If there can't be made a possible combination from the letters that equals a valid word, the function is called again
 	if (!is_PossibleWord(letters,existing_word)) {
 		letters.erase();
 		GenerateRandomLetters(numberofletters, letters,existing_word);
 	}
+
 	// The letters are displayed
 	else {
 		for (int i = 0; i < numberofletters; i++) cout << letters[i] << " ";
 	}
 }
+
 // Checks if a valid combination (word) of the generated letters exists
 bool is_PossibleWord(string letters,string& existing_word) {
 	// Line string to read from the dictionary file
@@ -66,7 +114,7 @@ bool is_PossibleWord(string letters,string& existing_word) {
 					if (line[i] == letters[j]) {
 						counter++;
 						// Erases the generated letter which is found in the word
-						letters.erase(letters.begin() + j); 
+						letters.erase(letters.begin() + j);
 						// Breaks the second loop and continues with another letter from the word
 						break;
 					}
@@ -79,42 +127,25 @@ bool is_PossibleWord(string letters,string& existing_word) {
 				DictionaryFile.close();
 				return 1;
 			}
-			letters.erase(); // Erases the changed sequence
-			letters = initial_letters; // Turns back to the initial letters
+            // Erases the changed sequence
+			letters.erase(); 
+           // Turns back to the initial letters
+			letters = initial_letters; 
 		}
+		
 	}
 
 	DictionaryFile.close();
 	return 0;
 }
-// Changes the number of letters
-void NumberofLetters(int& numberofletters) {
-	cout << " Enter the new number of letters: ";
-	cin >> numberofletters;
-	while (numberofletters <= 1) {
-		cout << " Not a possible setting." << endl;
-		cout << " Enter the new number of letters: ";
-		cin >> numberofletters;
-	}
-	cout << endl;
-}
-// Changes the number of rounds
-void NumberofRounds(int& numberofrounds) {
-	cout << " Enter the new number of rounds: ";
-	cin >> numberofrounds;
-	while (numberofrounds < 1) {
-		cout << " Not a possible setting." << endl;
-		cout << " Enter the new number of letters: ";
-		cin >> numberofrounds;
-	}
-	cout << endl;
-}
+
 // Checks if the word is valid
 bool Word_Check(string letters, string word) {
+	int counter = 0;
 	// Checks if the word is longer than the count of the given letters
 	if (word.length() > letters.length()) return 0;
-	// Checks if there is a letter in the word which is not in the given letters
-	int counter = 0;
+
+    // Checks if there is a letter in the word which is not among the given letters
 	for (size_t i = 0; i < word.length(); i++) {
 		for (size_t j = 0; j < letters.length(); j++) {
 			if (word[i] == letters[j]) {
@@ -125,17 +156,19 @@ bool Word_Check(string letters, string word) {
 		}
 	}
 	// Returns false if the number of the given letters present in the word are less than it's length
-	if (counter != word.length()) return 0;
+	if (counter != word.length()) {
+		return 0;
+	}
 	// Returns false if the word isn't in the dictionary
-	if (!Dictionary_Check(word)) return 0;
+	if (!Dictionary_Check(word)) {
+		return 0;
+	}
 	return 1;
 }
 
 // Checks if the word is in the dictionary
 bool Dictionary_Check(string word) {
-
 	bool found = 0;
-	// Line string to read from the dictionary file
 	string line;
 	fstream DictionaryFile;
 	// Opens without erasing the content of the file
@@ -156,6 +189,7 @@ bool Dictionary_Check(string word) {
 	if (found) return 1;
 	return 0;
 }
+
 // Displays the possible word
 void ShowPossibleWord(string& word, string& letters,string existing_word ) {
 	cout << endl;
@@ -164,6 +198,7 @@ void ShowPossibleWord(string& word, string& letters,string existing_word ) {
 	word.erase();
 	letters.erase();
 }
+
 // Converts all uppercase letters in a word to lowercase letters
 void ToLowerCase(string& line) {
 	for (int i = 0; i < line.length(); i++) {
@@ -172,13 +207,30 @@ void ToLowerCase(string& line) {
 		}
 	}
 }
+
+// Checks if a string contains only letters
+bool isWord(string word) {
+	for (size_t i = 0; i < word.length(); i++) {
+		if (word[i] < 'A' || word[i]>'z') {
+			return 0;
+		}
+		if (word[i] > 'Z' && word[i] < 'a') {
+			return 0;
+		}
+	}
+	return 1;
+}
+
 // Adds a new word to the dictionary if it doesn't exist yet
 void AppendtoDictionary(string new_word) {
 	fstream Dictionaryfile;
+
 	// Checks if the new word has uppercase letters and if yes, converts them to lowercase
 	ToLowerCase(new_word);
+
 	// Opens the dictionary file for appending
 	Dictionaryfile.open("Dictionary.txt", ios::app);
+
 	// Checks if the file is open
 	if (Dictionaryfile.is_open()) {
 		// Checks if the new word already exists in the Dictionary file
@@ -189,9 +241,7 @@ void AppendtoDictionary(string new_word) {
 			cout << endl << endl;
 		}
 		else {
-			// Closes the file
 			Dictionaryfile.close();
-			// Erases the string
 			new_word.erase();
 			cout << " This word already exists in the dictionary." << endl;
 			cout << " If you want to return to MENU enter '1' else enter new word to the dictionary: ";
