@@ -1,6 +1,6 @@
 // Helping_Fuctions.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-/**
+/*
 *
 * Solution to course project # 8
 * Introduction to programming course
