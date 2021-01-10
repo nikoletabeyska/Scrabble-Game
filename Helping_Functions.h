@@ -1,3 +1,18 @@
+/**
+*
+* Solution to course project # 8
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2020/2021
+*
+* @author Nikoleta Beyska
+* @idnumber 62540
+* @compiler VC
+*
+* <header file with helper functions>
+*
+*/
+
 #ifndef Helping_Functions
 #include<string>
 void Menu_output(int numberofrounds,int numberofletters);
