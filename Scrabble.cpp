@@ -7,7 +7,7 @@
 #include "Helping_Functions.h"
 using namespace std;
 //executes if you start a new game
-void Main_Game(int& numberofletters, int& numberofrounds) {
+void Main_Game(int& numberofletters, int& numberofrounds,int& highest_score) {
 	string word;
 	string letters;
 	string existing_word;
@@ -92,10 +92,16 @@ void Main_Game(int& numberofletters, int& numberofrounds) {
 		cout << endl;
 	}
 
+	
 	//Displays after the last round
 	cout << "--->";
 	cout << "Your total points are: " << points<<endl;
 	cout << endl;
+	if (points > highest_score) {
+		highest_score = points;
+		cout << " You have new highest score!" << endl;
+		cout << endl;
+	}
 	cout << " *Returning to MENU*" << endl;
 	cout << endl;
 
@@ -105,16 +111,23 @@ int main()
 	int choice = 0;
 	int numberofletters = 10;
 	int numberofrounds =10;
+	int highest_score = 0;
+	cout << "----------------------" << endl;
 	cout << "     SCRABBLE" << endl;
+	cout << "----------------------"<< endl;
 	cout << endl;
-	
 	do {
 		// Displays the menu
 		Menu_output(numberofrounds,numberofletters);
 		cin >> choice;
 		switch (choice) {
 		case 1:
-			Main_Game(numberofletters, numberofrounds);
+			cout << endl;
+			cout << endl;
+			cout << " Your highest score so far is " << highest_score << " points." << endl;
+			cout << "        Let's change that!" << endl;
+			cout << endl;
+			Main_Game(numberofletters, numberofrounds,highest_score);
 			break;
 
 		case 2:
@@ -145,7 +158,14 @@ int main()
 	    string new_word;
 		cout << " Enter new word to the dictionary: ";
 		cin >> new_word;
-		// Adds new word to the dictionary if it doesn't exist yet
+		// Checks if the new word contains only letters
+		while(!isWord(new_word)) {
+			new_word.erase();
+			cout << " This is not a word." << endl;
+			cout << " Enter a valid new word to the dictionary: ";
+			cin >> new_word;
+		}
+		// Adds a new word to the dictionary if it doesn't exist yet
 		AppendtoDictionary(new_word);
 		}
 			break;
@@ -153,14 +173,17 @@ int main()
 		case 4: 
 			cout << "\n Hope to see you again! :)" << endl;
 		    break;
+
 		case 5:
 			cout << endl;
 			cout << "      How to play: " << endl;
 			cout << "- You will be given a combination of letters from which you should make a valid word." << endl;
 			cout << "- If you can't make a word, during one of the rounds, enter '0' to see a possible word." << endl;
-			cout << "  Then you will be given opportunity to continue with another combination of letters." << endl;
+			cout << "  Then you will automatically refresh the round with another combination of letters." << endl;
 			cout << "- If you want to return to the MENU during the game, enter 'M'." << endl;
 			cout << "- At the end of the game your total points will be displayed. One point equals to one letter of your word each round." << endl;
+			cout << "- Your highest score will be shown at the beginning of every game." << endl;
+			cout << "  Have fun! :)" << endl;
 			cout << endl;
 			break;
 
